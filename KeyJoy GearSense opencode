@@ -377,7 +377,7 @@ Ajustar(dir, overrideInc := 0) {
         : (
             GetKeyState("3", "P") ? 1000 :
             GetKeyState("2", "P") ? 300 :
-            GetKeyState("1", "P") ? 100 : 500
+            GetKeyState("1", "P") ? 100 : 250
         )
     )
 
