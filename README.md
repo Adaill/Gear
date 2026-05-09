@@ -8,7 +8,7 @@ Needs to be tested in online games with anticheats
 
     msg .= "═══════════════════════════════`n"
     msg .= "🧭 KEYJOY GEAR - FULL GUIDE`n"
-    msg .= "👤 @criadepc`n"
+    msg .= "👤 @criadepc`n" BORN IN PC
     msg .= "═══════════════════════════════`n`n"
 
     msg .= "🔴 MAIN CONTROL`n"
