@@ -1,8 +1,6 @@
 ; ############################################################################
-; # MOUSE CAMBIAL - V7.6 REFATORADO                                          #
-; # Mantendo lógica original + sense mínima em 387                           #
-; # Mouse4 também controla speed                                             #
-; # @criadepc                                                                #
+; # MOUSE CAMBIAL - V1.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT  🚫   #
+; # @criadepc - PROFIT FREE                                                 #
 ; ############################################################################
 
 #Requires AutoHotkey v2.0
@@ -16,18 +14,89 @@ A_HotkeyInterval := 10
 
 SetNumLockState "AlwaysOn"
 
+EnterClick() {
+    Send "{Enter}"
+}
+
+#HotIf (IsActive && !IsTyping)
+
+NumpadDot::Send "{RButton Down}"
+NumpadDot Up::Send "{RButton Up}"
+
+*::Send "{MButton}"      
+/::Send "{XButton2}"     ; Mouse 4 alternativo (mais seguro)
+*Numpad0::Send "{Blind}{LButton Down}"
+*Numpad0 Up::Send "{Blind}{LButton Up}"
+*Numpad5::Send "{Blind}{LButton Down}"
+*Numpad5 Up::Send "{Blind}{LButton Up}"
+*NumpadAdd::Send "{Blind}{RButton Down}"
+*NumpadAdd Up::Send "{Blind}{RButton Up}"
 
 ; =========================================================
-; BOTÃO EXTRA: "." (NumpadDot) = CLIQUE ESQUERDO
+; SETAS = MOVIMENTO DO MOUSE
 ; =========================================================
 
-#HotIf IsActive
-NumpadDot::Click "Left"
+Up:: {
+    global KeyUpHeld := true
+}
+
+Up Up:: {
+    global KeyUpHeld := false
+}
+
+Down:: {
+    global KeyDownHeld := true
+}
+
+Down Up:: {
+    global KeyDownHeld := false
+}
+
+Left:: {
+    global KeyLeftHeld := true
+}
+
+Left Up:: {
+    global KeyLeftHeld := false
+}
+
+Right:: {
+    global KeyRightHeld := true
+}
+
+Right Up:: {
+    global KeyRightHeld := false
+}
+
+
 #HotIf
 
 ; =========================================================
 ; ESTADOS GLOBAIS
 ; =========================================================
+
+; =========================================================
+; TOPMOST GUARD (ANTI-SOBREPOSIÇÃO)
+; =========================================================
+
+global TopMostGui := Gui("+AlwaysOnTop -Caption +ToolWindow")
+TopMostGui.Show("NoActivate Hide")
+
+SetTimer(ManterSempreNoTopo, 1000)
+
+ManterSempreNoTopo() {
+    global TopMostGui
+
+    hwnd := TopMostGui.Hwnd
+
+    DllCall("SetWindowPos",
+        "ptr", hwnd,
+        "ptr", -1, ; HWND_TOPMOST
+        "int", 0, "int", 0, "int", 0, "int", 0,
+        "uint", 0x0001 | 0x0002 ; SWP_NOMOVE | SWP_NOSIZE
+    )
+}
+
 
 global IsActive := false
 global IsGameMode := false
@@ -43,6 +112,7 @@ global KeyUpHeld := false
 global KeyDownHeld := false
 global KeyLeftHeld := false
 global KeyRightHeld := false
+global EnterClickEnabled := false
 
 global KeyUpLeftHeld := false
 global KeyUpRightHeld := false
@@ -92,21 +162,27 @@ AlternarScript() {
 ; =========================================================
 
 CapsLock & Home::AlternarScript()
-+-::AlternarScript()
-+NumpadSub::AlternarScript()
+NumpadSub::AlternarScript()
 
 #HotIf IsActive
 
-*NumpadSub:: {
+':: {
 
-    global IsTyping
+    global EnterClickEnabled, IsTyping
 
-    IsTyping := !IsTyping
+    ; 🔒 Se estiver digitando, a tecla funciona normalmente
+    if (IsTyping) {
+        Send "'"
+        return
+    }
+
+    ; 🔁 Caso contrário, apenas alterna EnterClick
+    EnterClickEnabled := !EnterClickEnabled
 
     ExibirFeedback(
-        IsTyping
-        ? "⌨️ MODO DIGITAÇÃO"
-        : "🖱️ MODO MOUSE"
+        EnterClickEnabled
+        ? "⏎ EnterClick: ON"
+        : "⏎ EnterClick: OFF"
     )
 }
 
@@ -131,20 +207,9 @@ CapsLock & Home::AlternarScript()
 
 MotorDeMovimento() {
 
-    global IsActive
-    global IsTyping
-    global IsGameMode
-    global PassoVelocidade
-
-    global KeyUpHeld
-    global KeyDownHeld
-    global KeyLeftHeld
-    global KeyRightHeld
-
-    global KeyUpLeftHeld
-    global KeyUpRightHeld
-    global KeyDownLeftHeld
-    global KeyDownRightHeld
+    global IsActive, IsTyping, IsGameMode, PassoVelocidade
+    global KeyUpHeld, KeyDownHeld, KeyLeftHeld, KeyRightHeld
+    global KeyUpLeftHeld, KeyUpRightHeld, KeyDownLeftHeld, KeyDownRightHeld
 
     if (!IsActive || IsTyping)
         return
@@ -157,13 +222,10 @@ MotorDeMovimento() {
 
     if (KeyUpHeld)
         dy -= velocidade
-
     if (KeyDownHeld)
         dy += velocidade
-
     if (KeyLeftHeld)
         dx -= velocidade
-
     if (KeyRightHeld)
         dx += velocidade
 
@@ -195,20 +257,9 @@ MotorDeMovimento() {
 
     if (IsGameMode) {
 
-        DllCall(
-            "mouse_event",
-            "UInt", 0x0001,
-            "Int", finalX,
-            "Int", finalY,
-            "UInt", 0,
-            "UPtr", 0
-        )
+        DllCall("mouse_event", "UInt", 0x0001, "Int", finalX, "Int", finalY, "UInt", 0, "UPtr", 0)
 
-        DllCall(
-            "SetCursorPos",
-            "Int", A_ScreenWidth // 2,
-            "Int", A_ScreenHeight // 2
-        )
+        DllCall("SetCursorPos", "Int", A_ScreenWidth // 2, "Int", A_ScreenHeight // 2)
 
         return
     }
@@ -216,24 +267,12 @@ MotorDeMovimento() {
     MouseMove(finalX, finalY, 0, "R")
 
     CoordMode "Mouse", "Screen"
-
     MouseGetPos(&mX, &mY)
 
     if (mX >= A_ScreenWidth - 1) {
-
-        DllCall(
-            "SetCursorPos",
-            "Int", 1,
-            "Int", mY
-        )
-
+        DllCall("SetCursorPos", "Int", 1, "Int", mY)
     } else if (mX <= 0) {
-
-        DllCall(
-            "SetCursorPos",
-            "Int", A_ScreenWidth - 2,
-            "Int", mY
-        )
+        DllCall("SetCursorPos", "Int", A_ScreenWidth - 2, "Int", mY)
     }
 }
 
@@ -268,46 +307,26 @@ Ajustar(dir, overrideInc := 0) {
         overrideInc != 0
         ? overrideInc
         : (
-            GetKeyState("3", "P")
-            ? 1000
-            : GetKeyState("2", "P")
-                ? 300
-                : GetKeyState("1", "P")
-                    ? 100
-                    : 500
+            GetKeyState("3", "P") ? 1000 :
+            GetKeyState("2", "P") ? 300 :
+            GetKeyState("1", "P") ? 100 : 500
         )
     )
 
-    PassoVelocidade := Clamp(
-        PassoVelocidade + (inc * dir),
-        387,
-        9000
-    )
+    PassoVelocidade := Clamp(PassoVelocidade + (inc * dir), 387, 9000)
 
     AtualizarSenseWindows()
 
     local tag := (
-        inc = 100
-        ? "🔍 FINO"
-        : inc = 300
-            ? "⚙️ MÉDIO"
-            : inc = 1000
-                ? "🚀 RÁPIDO"
-                : "⚡ PADRÃO"
+        inc = 100 ? "🔍 FINO" :
+        inc = 300 ? "⚙️ MÉDIO" :
+        inc = 1000 ? "🚀 RÁPIDO" : "⚡ PADRÃO"
     )
 
-    ExibirFeedback(
-        "Sense: " tag " (" PassoVelocidade ")"
-    )
+    ExibirFeedback("Sense: " tag " (" PassoVelocidade ")")
 }
 
-Clamp(v, mi, ma) => (
-    v < mi
-    ? mi
-    : v > ma
-        ? ma
-        : v
-)
+Clamp(v, mi, ma) => (v < mi ? mi : v > ma ? ma : v)
 
 ; =========================================================
 ; SENSE WINDOWS
@@ -317,19 +336,10 @@ AtualizarSenseWindows() {
 
     global PassoVelocidade
 
-    local speed := Round(
-        1 + ((PassoVelocidade - 387) / 8613) * 19
-    )
-
+    local speed := Round(1 + ((PassoVelocidade - 387) / 8613) * 19)
     speed := Clamp(speed, 1, 20)
 
-    DllCall(
-        "SystemParametersInfo",
-        "UInt", 0x0071,
-        "UInt", 0,
-        "UInt", speed,
-        "UInt", 0
-    )
+    DllCall("SystemParametersInfo", "UInt", 0x0071, "UInt", 0, "UInt", speed, "UInt", 0)
 }
 
 ; =========================================================
@@ -339,18 +349,12 @@ AtualizarSenseWindows() {
 ExibirFeedback(msg) {
 
     try {
-
         hwnd := WinExist("A")
         classe := WinGetClass(hwnd)
 
         if (classe = "Progman" || classe = "WorkerW") {
-
             ToolTip(msg)
-
-            SetTimer(
-                () => ToolTip(),
-                -1200
-            )
+            SetTimer(() => ToolTip(), -1200)
         }
     }
 }
@@ -361,20 +365,63 @@ ExibirFeedback(msg) {
 
 #HotIf (IsActive && !IsTyping)
 
-*NumpadEnter::Return
+':: {
+
+    global EnterClickEnabled
+    EnterClickEnabled := !EnterClickEnabled
+
+    ExibirFeedback(
+        EnterClickEnabled
+        ? "⏎ EnterClick: ON"
+        : "⏎ EnterClick: OFF"
+    )
+}
+
+*Enter:: {
+
+    global EnterClickEnabled
+
+    if (EnterClickEnabled)
+        EnterClick()
+    else
+        Send "{Enter}"
+}
+
+*NumpadEnter:: {
+
+    global EnterClickEnabled
+
+    if (EnterClickEnabled) {
+        Click "Left"
+        return
+    }
+
+    AlternarScript()
+}
+
+; =========================================================
+; CTRL / ALT COMPORTAMENTO DINÂMICO
+; =========================================================
+
+#HotIf (IsActive && !IsTyping && !EnterClickEnabled)
 
 *Ctrl::Send "{Blind}{LButton Down}"
 *Ctrl Up::Send "{Blind}{LButton Up}"
 
-*Alt::Send "{Blind}{RButton Down}"
-*Alt Up::Send "{Blind}{RButton Up}"
+*LAlt::Send "{Blind}{RButton Down}"
+*LAlt Up::Send "{Blind}{RButton Up}"
 
-*Numpad5::Click
-*Numpad0::Click
-*NumpadDot::Click "Right"
-*NumpadAdd::Click "Right"
-*NumpadMult::Click "Middle"
-*NumpadDiv::XButton1
+#HotIf (IsActive && !IsTyping && EnterClickEnabled)
+
+; No modo EnterClick -> voltam a ser teclas normais
+*Ctrl::Send "{LCtrl}"
+*Alt::Send "{LAlt}"
+
+#HotIf
+
+
+
+
 
 ; =========================================================
 ; SCROLL + SPEED
@@ -389,22 +436,15 @@ NumpadEnter & WheelDown::Ajustar(-1)
 XButton1 & WheelUp::Ajustar(1)
 XButton1 & WheelDown::Ajustar(-1)
 
+NumpadEnter & Numpad8::Ajustar(1)   ; UP
+NumpadEnter & Numpad2::Ajustar(-1)  ; DOWN
+
 ; =========================================================
 ; DIREÇÕES
 ; =========================================================
 
 *Numpad8::
 *NumpadUp:: {
-
-    if (
-        GetKeyState("CapsLock", "P")
-        || GetKeyState("NumpadEnter", "P")
-        || GetKeyState("XButton1", "P")
-    ) {
-        Ajustar(1)
-        return
-    }
-
     global KeyUpHeld := true
 }
 
@@ -415,16 +455,6 @@ XButton1 & WheelDown::Ajustar(-1)
 
 *Numpad2::
 *NumpadDown:: {
-
-    if (
-        GetKeyState("CapsLock", "P")
-        || GetKeyState("NumpadEnter", "P")
-        || GetKeyState("XButton1", "P")
-    ) {
-        Ajustar(-1)
-        return
-    }
-
     global KeyDownHeld := true
 }
 
@@ -453,48 +483,151 @@ XButton1 & WheelDown::Ajustar(-1)
     global KeyRightHeld := false
 }
 
-; =========================================================
-; DIAGONAIS
-; =========================================================
-
 *Numpad7::
 *NumpadHome:: {
-    global KeyUpLeftHeld := true
+    global KeyUpHeld := true
+    global KeyLeftHeld := true
 }
 
 *Numpad7 Up::
 *NumpadHome Up:: {
-    global KeyUpLeftHeld := false
+    global KeyUpHeld := false
+    global KeyLeftHeld := false
 }
 
 *Numpad9::
 *NumpadPgUp:: {
-    global KeyUpRightHeld := true
+    global KeyUpHeld := true
+    global KeyRightHeld := true
 }
 
 *Numpad9 Up::
 *NumpadPgUp Up:: {
-    global KeyUpRightHeld := false
+    global KeyUpHeld := false
+    global KeyRightHeld := false
 }
 
 *Numpad1::
 *NumpadEnd:: {
-    global KeyDownLeftHeld := true
+    global KeyDownHeld := true
+    global KeyLeftHeld := true
 }
 
 *Numpad1 Up::
 *NumpadEnd Up:: {
-    global KeyDownLeftHeld := false
+    global KeyDownHeld := false
+    global KeyLeftHeld := false
 }
 
 *Numpad3::
 *NumpadPgDn:: {
-    global KeyDownRightHeld := true
+    global KeyDownHeld := true
+    global KeyRightHeld := true
 }
 
 *Numpad3 Up::
 *NumpadPgDn Up:: {
-    global KeyDownRightHeld := false
+    global KeyDownHeld := false
+    global KeyRightHeld := false
 }
 
 #HotIf
+
+; =========================================================
+; MENU
+; =========================================================
+
+F1::ExibirMenuAjuda()
+
+ExibirMenuAjuda() {
+
+    global IsActive, IsTyping, IsGameMode, EnterClickEnabled, PassoVelocidade
+
+    msg := ""
+
+    msg .= "═══════════════════════════════`n"
+    msg .= "🧭 MOUSE CAMBIAL - GUIA COMPLETO`n"
+    msg .= "👤 @criadepc`n"
+    msg .= "═══════════════════════════════`n`n"
+
+    ; =========================
+    ; LIGA / DESLIGA
+    ; =========================
+    msg .= "🔴 CONTROLE PRINCIPAL`n"
+    msg .= "-  SHIFT + HOME ou Numpad-  → Liga / Desliga o script`n"
+
+    ; =========================
+    ; MODOS
+    ; =========================
+    msg .= "🟡 MODOS DO SISTEMA`n"
+
+    msg .= "🔴 MODO DESLIGADO`n"
+    msg .= "-  SHIFT + HOME ou Numpad-  → Te permite digitar e usar o teclado normalmente rapidamente n"
+	
+    msg .= "🖱️ MODO MOUSE (padrão)`n"
+    msg .= "  • Movimento do mouse ativo via Numpad`n"
+    msg .= "  • Ctrl = clique esquerdo`n"
+    msg .= "  • Alt = clique direito`n`n"
+
+    msg .= "🎮 MODO JOGO (Shift + J)`n"
+    msg .= "  • Regula sense (alguns jogos precisam)`n"
+    msg .= "  • Usa movimento via API direta (mouse_event)`n"
+    msg .= "  • Cursor reseta no centro da tela`n`n"
+
+    ; =========================
+    ; ENTER CLICK
+    ; =========================
+    msg .= "⏎ ENTER CLICK MODE (' key)`n"
+    msg .= "  • Alterna Marcha vs clique Esq`n"
+    msg .= "  • ON: Enter = clique esquerdo`n"
+    msg .= "  • NumpadEnter = clique esquerdo`n"
+    msg .= "  • OFF: NumEnter vira Marcha`n`n"
+	msg .= "- Ctrl/Alt voltam ao normal no EnterClick OFF`n`n"
+
+    ; =========================
+    ; MOVIMENTO
+    ; =========================
+    msg .= "🧭 MOVIMENTO (NUMPAD)`n"
+    msg .= "- Numpad8 / ↑ → mover para cima`n"
+    msg .= "- Numpad2 / ↓ → mover para baixo`n"
+    msg .= "- Numpad4 / ← → mover esquerda`n"
+    msg .= "- Numpad6 / → → mover direita`n"
+    msg .= "- Diagonais também`n`n"
+
+    ; =========================
+    ; SCROLL / VELOCIDADE
+    ; =========================
+    msg .= "⚙️ VELOCIDADE / SENSIBILIDADE`n"
+    msg .= "- CapsLock + WheelUp → Aumenta sensibilidade`n"
+    msg .= "- CapsLock + WheelDown → Diminui sensibilidade`n"
+    msg .= "- XButton1 + Wheel → Ajuste rápido`n"
+    msg .= "- NumpadEnter + Numpad8 → Aumenta`n"
+    msg .= "- NumpadEnter + Numpad2 → Diminui`n`n"
+
+    msg .= "📊 NÍVEIS DE AJUSTE`n"
+    msg .= "  • 1 = fino (precisão)`n"
+    msg .= "  • 2 = médio`n"
+    msg .= "  • 3 = rápido (alto ganho)`n`n"
+
+    ; =========================
+    ; CONTROLES ESPECIAIS
+    ; =========================
+    msg .= "🧩 CONTROLES ESPECIAIS`n"
+    msg .= "- Ctrl → clique esquerdo (segurar)`n"
+    msg .= "- Alt → clique direito (segurar)`n"
+    msg .= "- Ctrl/Alt voltam ao normal no EnterClick OFF`n`n"
+
+    ; =========================
+    ; STATUS
+    ; =========================
+    msg .= "📌 STATUS ATUAL`n"
+    msg .= "- Script: " (IsActive ? "ON" : "OFF") "`n"
+    msg .= "- GameMode: " (IsGameMode ? "ON" : "OFF") "`n"
+    msg .= "- EnterClick: " (EnterClickEnabled ? "ON" : "OFF") "`n"
+    msg .= "- Sensibilidade: " PassoVelocidade "`n`n"
+
+    msg .= "═══════════════════════════════"
+
+    ToolTip(msg)
+    SetTimer(() => ToolTip(), -5000)
+}
