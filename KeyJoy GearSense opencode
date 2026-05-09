@@ -119,7 +119,8 @@ global IsActive := false
 global IsGameMode := false
 global IsTyping := false
 
-global PassoVelocidade := 250
+global PassoVelocidade := 500
+global AccelMouse := 0.1
 
 ; =========================================================
 ; ESTADOS DAS TECLAS
@@ -131,6 +132,8 @@ global KeyDownHeld := false
 global KeyLeftHeld := false
 global KeyRightHeld := false
 global EnterClickEnabled := false
+
+global MoveStartTick := 0
 
 global KeyUpLeftHeld := false
 global KeyUpRightHeld := false
@@ -273,11 +276,27 @@ NumpadSub::AlternarScript()
 ; MOTOR PRINCIPAL
 ; =========================================================
 
+F7::AjustarAccel(1)
+F8::AjustarAccel(-1)
+
+AjustarAccel(dir) {
+
+    global AccelMouse
+
+    AccelMouse += (dir * 0.05)
+
+    ; limites seguros (evita “loucuras”)
+    AccelMouse := Clamp(AccelMouse, 0.1, 3.0)
+
+    ExibirFeedback("⚡ ACCEL: " Round(AccelMouse, 2))
+}
+
 MotorDeMovimento() {
 
     global IsActive, IsTyping, IsGameMode, PassoVelocidade
     global KeyUpHeld, KeyDownHeld, KeyLeftHeld, KeyRightHeld
     global KeyUpLeftHeld, KeyUpRightHeld, KeyDownLeftHeld, KeyDownRightHeld
+    global MoveStartTick
 
     if (!IsActive || IsTyping)
         return
@@ -317,8 +336,13 @@ MotorDeMovimento() {
         dy += velocidade
     }
 
-    if (dx = 0 && dy = 0)
-        return
+if (dx = 0 && dy = 0) {
+    MoveStartTick := 0  ; reset quando parar de mover
+    return
+}
+
+if (MoveStartTick = 0)
+    MoveStartTick := A_TickCount
 
 ; normaliza diagonal para não ficar mais rápido
 if (dx != 0 && dy != 0) {
@@ -326,8 +350,19 @@ if (dx != 0 && dy != 0) {
     dy := dy * 0.7071
 }
 
-local finalX := Round(dx * forca)
-local finalY := Round(dy * forca)
+global AccelMouse
+
+elapsed := A_TickCount - MoveStartTick
+
+; BURST curto (ajuste fino no início do movimento)
+local burstTime := 120  ; ms (ajuste entre 30~120)
+
+local accel := (elapsed < burstTime)
+    ? AccelMouse
+    : 1.0
+
+local finalX := Round(dx * forca * accel)
+local finalY := Round(dy * forca * accel)
 
     if (IsGameMode) {
 
