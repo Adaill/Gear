@@ -119,7 +119,7 @@ global IsActive := false
 global IsGameMode := false
 global IsTyping := false
 
-global PassoVelocidade := 387
+global PassoVelocidade := 250
 
 ; =========================================================
 ; ESTADOS DAS TECLAS
@@ -381,7 +381,7 @@ Ajustar(dir, overrideInc := 0) {
         )
     )
 
-    PassoVelocidade := Clamp(PassoVelocidade + (inc * dir), 387, 9000)
+    PassoVelocidade := Clamp(PassoVelocidade + (inc * dir), 250, 9000)
 
     AtualizarSenseWindows()
 
@@ -404,7 +404,7 @@ AtualizarSenseWindows() {
 
     global PassoVelocidade
 
-    local speed := Round(1 + ((PassoVelocidade - 387) / 8613) * 19)
+    local speed := Round(1 + ((PassoVelocidade - 250) / 8613) * 19)
     speed := Clamp(speed, 1, 20)
 
     DllCall("SystemParametersInfo", "UInt", 0x0071, "UInt", 0, "UInt", speed, "UInt", 0)
