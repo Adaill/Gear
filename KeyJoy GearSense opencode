@@ -358,7 +358,7 @@ global AccelMouse
 elapsed := A_TickCount - MoveStartTick
 
 ; BURST curto (ajuste fino no início do movimento)
-local burstTime := 200  ; base
+local burstTime := 100  ; base
 
 if (elapsed < burstTime) {
     accel := AccelMouse
