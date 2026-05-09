@@ -1,7 +1,9 @@
 ; ############################################################################
-; # MOUSE CAMBIAL - V1.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT  🚫   #
-; # @criadepc - PROFIT FREE                                                 #
+; # KEYJOY Gear Sense - V3.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT 🚫#
+; # @criadepc -  Born in PC                                                  #
 ; ############################################################################
+;Now with fixed diags and aim burst acceleration control for fine aim adjustments while in high sensitivity
+;Try to compete with it.
 
 #Requires AutoHotkey v2.0
 #SingleInstance Force
@@ -52,7 +54,7 @@ PgDn::
 ; =========================================================
 ; SETAS = MOVIMENTO DO MOUSE
 ; =========================================================
-#HotIf (IsActive && !IsTyping && !EnterClickEnabled)!EnterClickEnabled)
+#HotIf (IsActive && !EnterClickEnabled)
 Up:: {
     global KeyUpHeld := true
 }
