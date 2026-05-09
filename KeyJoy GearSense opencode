@@ -320,8 +320,14 @@ MotorDeMovimento() {
     if (dx = 0 && dy = 0)
         return
 
-    local finalX := Round(dx * forca)
-    local finalY := Round(dy * forca)
+; normaliza diagonal para não ficar mais rápido
+if (dx != 0 && dy != 0) {
+    dx := dx * 0.7071   ; 1 / √2
+    dy := dy * 0.7071
+}
+
+local finalX := Round(dx * forca)
+local finalY := Round(dy * forca)
 
     if (IsGameMode) {
 
