@@ -39,7 +39,7 @@ Este projeto é **experimental**.
 ---
 
 ## 📦 Instalação
-1. Baixe o executável compilado (`MouseCambial.exe`).  
+1. Baixe o executável compilado (`MouseCambialv2.exe`).  
 2. Execute no Windows (não precisa instalar AutoHotkey).  
 3. Use F1 para abrir o menu de ajuda.  
 
@@ -97,7 +97,7 @@ This project is **experimental**.
 ---
 
 ## 📦 Installation
-1. Download the compiled executable (`MouseCambial.exe`).  
+1. Download the compiled executable (`MouseCambialv2.exe`).  
 2. Run it on Windows (no need to install AutoHotkey).  
 3. Press F1 to open the help menu.  
 
