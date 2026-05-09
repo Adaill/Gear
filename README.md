@@ -73,10 +73,10 @@ Needs to be tested in online games with anticheats
     msg .= "  • 1 = fine (precision)`n"
     msg .= "  • 2 = medium`n"
     msg .= "  • 3 = fast (high gain)`n`n"
-	msg .= "  • F7 = diminui burst aceleração`n`n"
-	msg .= "  • F8 = aumenta burst aceleração`n`n"
-	msg .= "  • Aceleração serve para ajuste fino da mira`n`n"
-	msg .= "  • nos primeiros momentos da tecla pressionada`n`n"
+	msg .= "  • F7 = decreases burst accel`n`n"
+	msg .= "  • F8 = increases burst accel`n`n"
+	msg .= "  • Accel serves for aim fast adjustments `n`n"
+	msg .= "  • at the first moments of the key being pressed`n`n"
 
     ; =========================
     ; SPECIAL CONTROLS
