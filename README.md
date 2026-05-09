@@ -20,10 +20,79 @@ Quero que seja distribuído livremente, integrado aos **inputs do Windows** e re
 -   NumEnter + NUM8/NUM2 Aumenta ou diminui a sensibilidade em tempo real.
 -   CAPSLOCK + MouseWheel Aumenta ou diminui a sensibilidade em tempo real.
 - 🖱️ Controle completo via teclado numérico (direções, diagonais, cliques).
-- 🚀 Ajuste de velocidade/sensibilidade com scroll do mouse.
+- 🚀 Ajuste de velocidade/sensibilidade com NUMEnter + NUM8/NUM2.
 - 🧭 **Menu de ajuda (F1)**: mostra atalhos, status e instruções em tempo real.
 
 ---
+
+    ; LIGA / DESLIGA
+    ; =========================
+    msg .= "🔴 CONTROLE PRINCIPAL`n"
+    msg .= "-  SHIFT + HOME ou Numpad-  → Liga / Desliga o script`n"
+
+    ; =========================
+    ; MODOS
+    ; =========================
+    msg .= "🟡 MODOS DO SISTEMA`n"
+
+    msg .= "🔴 MODO DESLIGADO`n"
+    msg .= "-  SHIFT + HOME ou Numpad-  → Te permite digitar e usar o teclado normalmente rapidamente n"
+	
+    msg .= "🖱️ MODO MOUSE (padrão)`n"
+    msg .= "  • Movimento do mouse ativo via Numpad`n"
+    msg .= "  • Ctrl = clique esquerdo`n"
+    msg .= "  • Alt = clique direito`n`n"
+
+    msg .= "🎮 MODO JOGO (Shift + J)`n"
+    msg .= "  • Regula sense (alguns jogos precisam)`n"
+    msg .= "  • Usa movimento via API direta (mouse_event)`n"
+    msg .= "  • Cursor reseta no centro da tela`n`n"
+
+    ; =========================
+    ; ENTER CLICK
+    ; =========================
+    msg .= "⏎ ENTER CLICK MODE (' key)`n"
+    msg .= "  • Alterna Marcha vs clique Esq`n"
+    msg .= "  • ON: Enter = clique esquerdo`n"
+    msg .= "  • NumpadEnter = clique esquerdo`n"
+    msg .= "  • OFF: NumEnter vira Marcha`n`n"
+	msg .= "- Ctrl/Alt voltam ao normal no EnterClick ON`n`n"
+
+    ; =========================
+    ; MOVIMENTO
+    ; =========================
+    msg .= "🧭 MOVIMENTO (NUMPAD)`n"
+	msg .= "- PAGE UP/ ↑ → SCROLL pra cima`n"
+    msg .= "- PAGE DOWN / ↑ → SCROLL pra baixo`n"
+    msg .= "- Numpad8 / ↑ → mover para cima`n"
+    msg .= "- Numpad2 / ↓ → mover para baixo`n"
+    msg .= "- Numpad4 / ← → mover esquerda`n"
+    msg .= "- Numpad6 / → → mover direita`n"
+    msg .= "- Diagonais também`n`n"
+
+    ; =========================
+    ; SCROLL / VELOCIDADE
+    ; =========================
+    msg .= "⚙️ VELOCIDADE / SENSIBILIDADE`n"
+    msg .= "- CapsLock + WheelUp → Aumenta sensibilidade`n"
+    msg .= "- CapsLock + WheelDown → Diminui sensibilidade`n"
+    msg .= "- XButton1 + Wheel → Ajuste rápido`n"
+    msg .= "- NumpadEnter + Numpad8 → Aumenta`n"
+    msg .= "- NumpadEnter + Numpad2 → Diminui`n`n"
+
+    msg .= "📊 NÍVEIS DE AJUSTE`n"
+    msg .= "  • 1 = fino (precisão)`n"
+    msg .= "  • 2 = médio`n"
+    msg .= "  • 3 = rápido (alto ganho)`n`n"
+
+    ; =========================
+    ; CONTROLES ESPECIAIS
+    ; =========================
+    msg .= "🧩 CONTROLES ESPECIAIS`n"
+    msg .= "- Ctrl → clique esquerdo (segurar)`n"
+    msg .= "- Alt → clique direito (segurar)`n"
+    msg .= "- Ctrl/Alt voltam ao normal no EnterClick ON`n`n"
+
 
 ## 🔑 Atalhos importantes
 - CapsLock + Home ou NUM- → Liga/Desliga script  
@@ -99,6 +168,74 @@ This project is **experimental**.
 - Focused on accessibility, fun, and personal use.  
 
 ---
+
+    msg .= "🔴 MAIN CONTROL`n"
+    msg .= "- SHIFT + HOME or Numpad- → Turn script ON / OFF`n"
+
+    ; =========================
+    ; MODES
+    ; =========================
+    msg .= "🟡 SYSTEM MODES`n"
+
+    msg .= "🔴 OFF MODE`n"
+    msg .= "- SHIFT + HOME or Numpad- → Allows normal typing and keyboard usage quickly`n`n"
+	
+    msg .= "🖱️ MOUSE MODE (default)`n"
+    msg .= "  • Mouse movement enabled via Numpad`n"
+    msg .= "  • Ctrl = left click`n"
+    msg .= "  • Alt = right click`n`n"
+
+    msg .= "🎮 GAME MODE (Shift + J)`n"
+    msg .= "  • Adjusts sensitivity (required for some games)`n"
+    msg .= "  • Uses direct mouse API (mouse_event)`n"
+    msg .= "  • Cursor resets to screen center`n`n"
+
+    ; =========================
+    ; ENTER CLICK
+    ; =========================
+    msg .= "⏎ ENTER CLICK MODE (' key)`n"
+    msg .= "  • Toggles Gear vs Left Click`n"
+    msg .= "  • ON: Enter = left click`n"
+    msg .= "  • NumpadEnter = left click`n"
+    msg .= "  • OFF: NumEnter becomes Gear`n`n"
+    msg .= "- Ctrl/Alt return to normal when EnterClick is ON`n`n"
+
+    ; =========================
+    ; MOVEMENT
+    ; =========================
+    msg .= "🧭 MOVEMENT (NUMPAD)`n"
+    msg .= "- PAGE UP / ↑ → Scroll up`n"
+    msg .= "- PAGE DOWN / ↓ → Scroll down`n"
+    msg .= "- Numpad8 / ↑ → move up`n"
+    msg .= "- Numpad2 / ↓ → move down`n"
+    msg .= "- Numpad4 / ← → move left`n"
+    msg .= "- Numpad6 / → → move right`n"
+    msg .= "- Diagonals supported`n`n"
+
+    ; =========================
+    ; SCROLL / SPEED
+    ; =========================
+    msg .= "⚙️ SPEED / SENSITIVITY`n"
+    msg .= "- CapsLock + WheelUp → Increase sensitivity`n"
+    msg .= "- CapsLock + WheelDown → Decrease sensitivity`n"
+    msg .= "- XButton1 + Wheel → Quick adjustment`n"
+    msg .= "- NumpadEnter + Numpad8 → Increase`n"
+    msg .= "- NumpadEnter + Numpad2 → Decrease`n`n"
+
+    msg .= "📊 ADJUSTMENT LEVELS`n"
+    msg .= "  • 1 = fine (precision)`n"
+    msg .= "  • 2 = medium`n"
+    msg .= "  • 3 = fast (high gain)`n`n"
+
+    ; =========================
+    ; SPECIAL CONTROLS
+    ; =========================
+    msg .= "🧩 SPECIAL CONTROLS`n"
+    msg .= "- Ctrl → left click`n"
+    msg .= "- Alt → right click`n"
+    msg .= "- Ctrl/Alt return to normal when EnterClick is ON`n`n"
+
+    --
 
 ## 📦 Installation
 1. Download the compiled executable (`MouseCambialv2.exe`).  
