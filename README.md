@@ -2,15 +2,15 @@ Transform your keyboard into a high level joykey controller.
 
 Watch happening https://www.youtube.com/watch?v=OwW92DXjxac
 
-Be careful with ANTI CHEATS, spread the world so it becomes normal and developed.
+Be careful with ANTI CHEATS, spread the world so it becomes normal and developed (I tested in some SAMP servers and wasnt banned).
+
+Needs to be tested in online games with anticheats
+
     msg .= "═══════════════════════════════`n"
-    msg .= "🧭 MOUSE CAMBIAL - FULL GUIDE`n"
+    msg .= "🧭 KEYJOY GEAR - FULL GUIDE`n"
     msg .= "👤 @criadepc`n"
     msg .= "═══════════════════════════════`n`n"
 
-    ; =========================
-    ; TOGGLE
-    ; =========================
     msg .= "🔴 MAIN CONTROL`n"
     msg .= "- SHIFT + HOME or Numpad- → Turn script ON / OFF`n"
 
@@ -43,10 +43,8 @@ Be careful with ANTI CHEATS, spread the world so it becomes normal and developed
     ; ENTER CLICK
     ; =========================
     msg .= "⏎ ENTER CLICK MODE (' key)`n"
-    msg .= "  • Toggles Gear vs Left Click`n"
-    msg .= "  • ON: Enter = left click`n"
-    msg .= "  • NumpadEnter = left click`n"
-    msg .= "  • OFF: NumEnter becomes Gear`n`n"
+    msg .= "  • Toggles SenseGear vs Left Click to NumEnter`n"
+    msg .= "  • Dectivates arrows as mouse (they become normal arrows)`n`n"
     msg .= "- Ctrl/Alt return to normal when EnterClick is ON`n`n"
 
     ; =========================
@@ -75,6 +73,10 @@ Be careful with ANTI CHEATS, spread the world so it becomes normal and developed
     msg .= "  • 1 = fine (precision)`n"
     msg .= "  • 2 = medium`n"
     msg .= "  • 3 = fast (high gain)`n`n"
+	msg .= "  • F7 = diminui burst aceleração`n`n"
+	msg .= "  • F8 = aumenta burst aceleração`n`n"
+	msg .= "  • Aceleração serve para ajuste fino da mira`n`n"
+	msg .= "  • nos primeiros momentos da tecla pressionada`n`n"
 
     ; =========================
     ; SPECIAL CONTROLS
@@ -88,13 +90,8 @@ Be careful with ANTI CHEATS, spread the world so it becomes normal and developed
     ; STATUS
     ; =========================
     msg .= "📌 CURRENT STATUS`n"
-    msg .= "- Script: " (IsActive ? "ON" : "OFF") "`n"
     msg .= "- GameMode: " (IsGameMode ? "ON" : "OFF") "`n"
     msg .= "- EnterClick: " (EnterClickEnabled ? "ON" : "OFF") "`n"
     msg .= "- Sensitivity: " PassoVelocidade "`n`n"
 
     msg .= "═══════════════════════════════"
-
-    ToolTip(msg)
-    SetTimer(() => ToolTip(), -5000)
-}
