@@ -24,6 +24,7 @@ Needs to be tested in online games with anticheats
 	
     msg .= "🖱️ MOUSE MODE (default)`n"
     msg .= "  • Mouse movement enabled via Numpad`n"
+	msg .= "  • Num5 = ft clickL`n"
     msg .= "  • Ctrl = left click`n"
     msg .= "  • Alt = right click`n`n"
 	
