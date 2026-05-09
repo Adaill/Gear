@@ -7,7 +7,7 @@ Criado por @criadepc — **OPEN SOURCE #free**
 
 ---
 
-USE NUM- ou CAPSLOCK + HOME para ligar
+Se o jogo bloquear o NUM-, utilize CAPSLOCK + HOME
 
 ## ✨ Objetivo
 Tenho limitações motoras e de conhecimento, e este projeto nasceu para facilitar meu uso do computador e permitir jogar de forma divertida.  
@@ -66,6 +66,8 @@ Keyboard mouse controller + GearSense March, focusing on **accessibility** and *
 Created by @criadepc — **OPEN SOURCE #free**
 
 ---
+
+IF inside THE GAME it BLOCKS NUM-, USE CAPSLOCK + HOME
 
 ## ✨ Objective
 I have motor and knowledge limitations, and this project was born to make my computer use easier and allow me to play in a fun way.  
