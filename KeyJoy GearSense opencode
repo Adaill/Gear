@@ -412,8 +412,6 @@ ExibirFeedback(msg) {
         Click "Left"
         return
     }
-
-    AlternarScript()
 }
 
 ; =========================================================
