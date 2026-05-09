@@ -125,6 +125,7 @@ global PassoVelocidade := 387
 ; ESTADOS DAS TECLAS
 ; =========================================================
 
+global InvertedMode := false
 global KeyUpHeld := false
 global KeyDownHeld := false
 global KeyLeftHeld := false
@@ -177,6 +178,56 @@ AlternarScript() {
 ; =========================================================
 ; HOTKEYS GLOBAIS
 ; =========================================================
+
+Insert:: {
+
+    global InvertedMode
+
+    InvertedMode := !InvertedMode
+
+    ExibirFeedback(
+        InvertedMode
+        ? "🔄 MODO INVERTIDO: ON"
+        : "🔄 MODO INVERTIDO: OFF"
+    )
+}
+
+#HotIf (IsActive && InvertedMode)
+
+*w:: {
+    global KeyUpHeld := true
+}
+*w Up:: {
+    global KeyUpHeld := false
+}
+
+*s:: {
+    global KeyDownHeld := true
+}
+*s Up:: {
+    global KeyDownHeld := false
+}
+
+*a:: {
+    global KeyLeftHeld := true
+}
+*a Up:: {
+    global KeyLeftHeld := false
+}
+
+*d:: {
+    global KeyRightHeld := true
+}
+*d Up:: {
+    global KeyRightHeld := false
+}
+q::Send "{RButton Down}"
+q Up::Send "{RButton Up}"
+
+e::Send "{LButton Down}"
+e Up::Send "{LButton Up}"
+
+#HotIf
 
 CapsLock & Home::AlternarScript()
 NumpadSub::AlternarScript()
@@ -445,6 +496,14 @@ ExibirFeedback(msg) {
 CapsLock & WheelUp::Ajustar(1)
 CapsLock & WheelDown::Ajustar(-1)
 
+#HotIf (IsActive && InvertedMode)
+
++W::Ajustar(1)
++S::Ajustar(-1)
+
+#HotIf
+
+
 NumpadEnter & WheelUp::Ajustar(1)
 NumpadEnter & WheelDown::Ajustar(-1)
 
@@ -552,6 +611,10 @@ NumpadEnter & Numpad2::Ajustar(-1)  ; DOWN
 ; MENU
 ; =========================================================
 
+; =========================================================
+; MENU
+; =========================================================
+
 F1::ExibirMenuAjuda()
 
 ExibirMenuAjuda() {
@@ -583,6 +646,13 @@ ExibirMenuAjuda() {
     msg .= "  • Mouse movement enabled via Numpad`n"
     msg .= "  • Ctrl = left click`n"
     msg .= "  • Alt = right click`n`n"
+	
+    msg .= "🖱️ INVERTED MOUSE MODE (INSERT KEY)`n"
+    msg .= "  • Mouse movement enabled via WASD`n"
+    msg .= "  • E = left click`n"
+    msg .= "  • Q = right click`n`n"
+	msg .= "  • SHIFT + W = sense up`n"
+    msg .= "  • SHIFT + S = sense down`n`n"
 
     msg .= "🎮 GAME MODE (Shift + J)`n"
     msg .= "  • Adjusts sensitivity (required for some games)`n"
