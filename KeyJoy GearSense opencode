@@ -1,6 +1,6 @@
 ; ############################################################################
-; # MOUSE CAMBIAL - V1.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT  🚫   #
-; # @criadepc - PROFIT FREE                                                 #
+; # KEYJOY GEAR - V3.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT  🚫   #
+; # @criadepc - (now with diag fix and precise aim burst acceleration)     #
 ; ############################################################################
 
 #Requires AutoHotkey v2.0
@@ -119,8 +119,9 @@ global IsActive := false
 global IsGameMode := false
 global IsTyping := false
 
-global PassoVelocidade := 500
-global AccelMouse := 0.1
+global PassoVelocidade := 750
+global AccelMouse := 0.2
+global BaseSense := 750
 
 ; =========================================================
 ; ESTADOS DAS TECLAS
@@ -276,8 +277,8 @@ NumpadSub::AlternarScript()
 ; MOTOR PRINCIPAL
 ; =========================================================
 
-F7::AjustarAccel(1)
-F8::AjustarAccel(-1)
+F7::AjustarAccel(-1)
+F8::AjustarAccel(1)
 
 AjustarAccel(dir) {
 
@@ -286,7 +287,7 @@ AjustarAccel(dir) {
     AccelMouse += (dir * 0.05)
 
     ; limites seguros (evita “loucuras”)
-    AccelMouse := Clamp(AccelMouse, 0.1, 3.0)
+    AccelMouse := Clamp(AccelMouse, 0.2, 3.0)
 
     ExibirFeedback("⚡ ACCEL: " Round(AccelMouse, 2))
 }
@@ -304,7 +305,7 @@ MotorDeMovimento() {
     local dx := 0
     local dy := 0
 
-    local velocidade := PassoVelocidade / 100
+    local velocidade := (PassoVelocidade / BaseSense)
     local forca := IsGameMode ? 6.0 : 1.0
 
     if (KeyUpHeld)
@@ -355,23 +356,36 @@ global AccelMouse
 elapsed := A_TickCount - MoveStartTick
 
 ; BURST curto (ajuste fino no início do movimento)
-local burstTime := 120  ; ms (ajuste entre 30~120)
+local burstTime := 200  ; base
+
+if (elapsed < burstTime) {
+    accel := AccelMouse
+}
+else {
+    ; fator progressivo
+    local factor := elapsed / burstTime
+
+    ; limite no QUÁDRUPLO
+    factor := Min(factor, 5)
+
+    accel := 1.0 * factor
+}
 
 local accel := (elapsed < burstTime)
     ? AccelMouse
     : 1.0
 
-local finalX := Round(dx * forca * accel)
-local finalY := Round(dy * forca * accel)
+local base := (PassoVelocidade / BaseSense)
 
-    if (IsGameMode) {
+local finalX := Round(dx * base * forca * accel)
+local finalY := Round(dy * base * forca * accel)
 
-        DllCall("mouse_event", "UInt", 0x0001, "Int", finalX, "Int", finalY, "UInt", 0, "UPtr", 0)
+if (IsGameMode) {
 
-        DllCall("SetCursorPos", "Int", A_ScreenWidth // 2, "Int", A_ScreenHeight // 2)
+    DllCall("mouse_event", "UInt", 0x0001, "Int", finalX, "Int", finalY, "UInt", 0, "UPtr", 0)
 
-        return
-    }
+    return
+}
 
     MouseMove(finalX, finalY, 0, "R")
 
@@ -665,13 +679,10 @@ ExibirMenuAjuda() {
     msg := ""
 
     msg .= "═══════════════════════════════`n"
-    msg .= "🧭 MOUSE CAMBIAL - FULL GUIDE`n"
+    msg .= "🧭 KEYJOY GEAR - FULL GUIDE`n"
     msg .= "👤 @criadepc`n"
     msg .= "═══════════════════════════════`n`n"
 
-    ; =========================
-    ; TOGGLE
-    ; =========================
     msg .= "🔴 MAIN CONTROL`n"
     msg .= "- SHIFT + HOME or Numpad- → Turn script ON / OFF`n"
 
@@ -736,6 +747,10 @@ ExibirMenuAjuda() {
     msg .= "  • 1 = fine (precision)`n"
     msg .= "  • 2 = medium`n"
     msg .= "  • 3 = fast (high gain)`n`n"
+	msg .= "  • F7 = diminui burst aceleração`n`n"
+	msg .= "  • F8 = aumenta burst aceleração`n`n"
+	msg .= "  • Aceleração serve para ajuste fino da mira`n`n"
+	msg .= "  • nos primeiros momentos da tecla pressionada`n`n"
 
     ; =========================
     ; SPECIAL CONTROLS
@@ -749,7 +764,6 @@ ExibirMenuAjuda() {
     ; STATUS
     ; =========================
     msg .= "📌 CURRENT STATUS`n"
-    msg .= "- Script: " (IsActive ? "ON" : "OFF") "`n"
     msg .= "- GameMode: " (IsGameMode ? "ON" : "OFF") "`n"
     msg .= "- EnterClick: " (EnterClickEnabled ? "ON" : "OFF") "`n"
     msg .= "- Sensitivity: " PassoVelocidade "`n`n"
