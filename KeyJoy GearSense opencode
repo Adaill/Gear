@@ -1,6 +1,6 @@
 ; ############################################################################
-; # KEYJOY GEAR - V3.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT  🚫   #
-; # @criadepc - (now with diag fix and precise aim burst acceleration)     #
+; # MOUSE CAMBIAL - V1.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT  🚫   #
+; # @criadepc - PROFIT FREE                                                 #
 ; ############################################################################
 
 #Requires AutoHotkey v2.0
@@ -52,7 +52,7 @@ PgDn::
 ; =========================================================
 ; SETAS = MOVIMENTO DO MOUSE
 ; =========================================================
-
+#HotIf (IsActive && !IsTyping && !EnterClickEnabled)!EnterClickEnabled)
 Up:: {
     global KeyUpHeld := true
 }
@@ -715,10 +715,8 @@ ExibirMenuAjuda() {
     ; ENTER CLICK
     ; =========================
     msg .= "⏎ ENTER CLICK MODE (' key)`n"
-    msg .= "  • Toggles Gear vs Left Click`n"
-    msg .= "  • ON: Enter = left click`n"
-    msg .= "  • NumpadEnter = left click`n"
-    msg .= "  • OFF: NumEnter becomes Gear`n`n"
+    msg .= "  • Toggles SenseGear vs Left Click to NumEnter`n"
+    msg .= "  • Dectivates arrows as mouse (they become normal arrows)`n`n"
     msg .= "- Ctrl/Alt return to normal when EnterClick is ON`n`n"
 
     ; =========================
