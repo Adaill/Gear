@@ -7,6 +7,8 @@ Criado por @criadepc — **OPEN SOURCE #free**
 
 ---
 
+USE NUM- ou CAPSLOCK + HOME para ligar
+
 ## ✨ Objetivo
 Tenho limitações motoras e de conhecimento, e este projeto nasceu para facilitar meu uso do computador e permitir jogar de forma divertida.  
 Quero que seja distribuído livremente, integrado aos **inputs do Windows** e reconhecido de forma legítima em jogos.
