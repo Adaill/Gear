@@ -8,7 +8,7 @@ Be careful with ANTI CHEATS, spread the world so it becomes normal and developed
 
 Needs to be tested in online games with anticheats
 
-just download any of the .exe acordando to your linguagem open it then CAPSLOCK + Home or Num- (Minus) with cursor on DESKTOP F1 for help
+just download any of the .exe according to your language open it then CAPSLOCK + Home or Num- (Minus) F1 for help with cursor on DESKTOP
 
     msg .= "═══════════════════════════════`n"
     msg .= "🧭 KEYJOY GEAR - FULL GUIDE`n"
