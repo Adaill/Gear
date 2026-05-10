@@ -1,9 +1,7 @@
 ; ############################################################################
-; # KEYJOY Gear Sense - V3.0 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT 🚫#
-; # @criadepc -  Born in PC                                                  #
+; # KEYJOYPAD GEARSENSE V3 OPEN SOURCE- PLUGIN ACESSIBILIDADE ANTICHEAT  🚫  #
+; # @criadepc - PROFIT FREE                                                  #
 ; ############################################################################
-;Now with fixed diags and aim burst acceleration control for fine aim adjustments while in high sensitivity
-;Try to compete with it.
 
 #Requires AutoHotkey v2.0
 #SingleInstance Force
@@ -136,6 +134,7 @@ global KeyLeftHeld := false
 global KeyRightHeld := false
 global EnterClickEnabled := false
 
+global TrueCrimeNYMode := false
 global MoveStartTick := 0
 
 global KeyUpLeftHeld := false
@@ -237,6 +236,21 @@ e Up::Send "{LButton Up}"
 
 CapsLock & Home::AlternarScript()
 NumpadSub::AlternarScript()
+
+F6:: {
+
+    global TrueCrimeNYMode
+
+    TrueCrimeNYMode := !TrueCrimeNYMode
+
+    ExibirFeedback(
+        TrueCrimeNYMode
+        ? "🗽 TRUE CRIME NY MODE: ON"
+        : "🗽 TRUE CRIME NY MODE: OFF"
+    )
+}
+
+
 
 #HotIf IsActive
 
@@ -574,6 +588,14 @@ NumpadEnter & Numpad2::Ajustar(-1)  ; DOWN
 ; DIREÇÕES
 ; =========================================================
 
+; =========================================================
+; DIREÇÕES
+; =========================================================
+
+; -------------------------
+; CARDINAIS
+; -------------------------
+
 *Numpad8::
 *NumpadUp:: {
     global KeyUpHeld := true
@@ -613,6 +635,13 @@ NumpadEnter & Numpad2::Ajustar(-1)  ; DOWN
 *NumpadRight Up:: {
     global KeyRightHeld := false
 }
+
+; -------------------------
+; DIAGONAIS
+; TRUE CRIME NY SAFE MODE
+; -------------------------
+
+#HotIf !TrueCrimeNYMode
 
 *Numpad7::
 *NumpadHome:: {
@@ -664,9 +693,9 @@ NumpadEnter & Numpad2::Ajustar(-1)  ; DOWN
 
 #HotIf
 
-; =========================================================
-; MENU
-; =========================================================
+#HotIf
+
+#HotIf
 
 ; =========================================================
 ; MENU
@@ -681,92 +710,96 @@ ExibirMenuAjuda() {
     msg := ""
 
     msg .= "═══════════════════════════════`n"
-    msg .= "🧭 KEYJOY GEAR - FULL GUIDE`n"
+    msg .= "🧭 KEYJOY GEAR - GUIA COMPLETO`n"
     msg .= "👤 @criadepc`n"
     msg .= "═══════════════════════════════`n`n"
 
-    msg .= "🔴 MAIN CONTROL`n"
-    msg .= "- SHIFT + HOME or Numpad- → Turn script ON / OFF`n"
+    msg .= "🔴 CONTROLE PRINCIPAL`n"
+    msg .= "- SHIFT + HOME ou Numpad- → Liga / Desliga o script`n`n"
 
     ; =========================
-    ; MODES
+    ; MODOS
     ; =========================
-    msg .= "🟡 SYSTEM MODES`n"
+    msg .= "🟡 MODOS DO SISTEMA`n`n"
 
-    msg .= "🔴 OFF MODE`n"
-    msg .= "- SHIFT + HOME or Numpad- → Allows normal typing and keyboard usage quickly`n`n"
+    msg .= "🔴 MODO DESLIGADO`n"
+    msg .= "- SHIFT + HOME ou Numpad- → Permite uso normal do teclado e digitação`n`n"
 	
-    msg .= "🖱️ MOUSE MODE (default)`n"
-    msg .= "  • Mouse movement enabled via Numpad`n"
-    msg .= "  • Ctrl = left click`n"
-    msg .= "  • Alt = right click`n`n"
+    msg .= "🖱️ MODO MOUSE (padrão)`n"
+    msg .= "  • Movimento do mouse via Numpad`n"
+    msg .= "  • Ctrl = clique esquerdo`n"
+    msg .= "  • Alt = clique direito`n`n"
 	
-    msg .= "🖱️ INVERTED MOUSE MODE (INSERT KEY)`n"
-    msg .= "  • Mouse movement enabled via WASD`n"
-    msg .= "  • E = left click`n"
-    msg .= "  • Q = right click`n`n"
-	msg .= "  • SHIFT + W = sense up`n"
-    msg .= "  • SHIFT + S = sense down`n`n"
+    msg .= "🖱️ MODO MOUSE INVERTIDO (tecla INSERT)`n"
+    msg .= "  • Movimento do mouse via WASD`n"
+    msg .= "  • E = clique esquerdo`n"
+    msg .= "  • Q = clique direito`n`n"
+    msg .= "  • SHIFT + W = aumentar sensibilidade`n"
+    msg .= "  • SHIFT + S = diminuir sensibilidade`n`n"
 
-    msg .= "🎮 GAME MODE (Shift + J)`n"
-    msg .= "  • Adjusts sensitivity (required for some games)`n"
-    msg .= "  • Uses direct mouse API (mouse_event)`n"
-    msg .= "  • Cursor resets to screen center`n`n"
+    msg .= "🎮 MODO JOGO (Shift + J)`n"
+    msg .= "  • Ajusta sensibilidade (necessário para alguns jogos)`n"
+    msg .= "  • Usa API direta do mouse (mouse_event)`n"
+    msg .= "  • Cursor é reposicionado no centro da tela`n`n"
+	
+	msg .= "🗽 TRUE CRIME NY MODE (F6)`n"
+    msg .= "  • Libera diagonais 7/9/1/3 para jogos como TRUE CRIME NY`n`n"
+	msg .= "  • Que já usa estas teclas por padrão`n`n"
 
     ; =========================
     ; ENTER CLICK
     ; =========================
-    msg .= "⏎ ENTER CLICK MODE (' key)`n"
-    msg .= "  • Toggles SenseGear vs Left Click to NumEnter`n"
-    msg .= "  • Dectivates arrows as mouse (they become normal arrows)`n`n"
-    msg .= "- Ctrl/Alt return to normal when EnterClick is ON`n`n"
+    msg .= "⏎ MODO ENTER CLICK (tecla ')`n"
+    msg .= "  • Alterna entre Gear e clique esquerdo no Enter`n"
+    msg .= "  • Desativa as setas como mouse (voltam ao normal)`n`n"
+    msg .= "- Ctrl/Alt voltam ao normal quando EnterClick está ativado`n`n"
 
     ; =========================
-    ; MOVEMENT
+    ; MOVIMENTO
     ; =========================
-    msg .= "🧭 MOVEMENT (NUMPAD)`n"
-    msg .= "- PAGE UP / ↑ → Scroll up`n"
-    msg .= "- PAGE DOWN / ↓ → Scroll down`n"
-    msg .= "- Numpad8 / ↑ → move up`n"
-    msg .= "- Numpad2 / ↓ → move down`n"
-    msg .= "- Numpad4 / ← → move left`n"
-    msg .= "- Numpad6 / → → move right`n"
-    msg .= "- Diagonals supported`n`n"
+    msg .= "🧭 MOVIMENTO (TECLADO NUMÉRICO)`n"
+    msg .= "- PAGE UP / ↑ → rolar para cima`n"
+    msg .= "- PAGE DOWN / ↓ → rolar para baixo`n"
+    msg .= "- Numpad8 / ↑ → mover para cima`n"
+    msg .= "- Numpad2 / ↓ → mover para baixo`n"
+    msg .= "- Numpad4 / ← → mover para esquerda`n"
+    msg .= "- Numpad6 / → → mover para direita`n"
+    msg .= "- Suporte a diagonais`n`n"
 
     ; =========================
-    ; SCROLL / SPEED
+    ; SCROLL / VELOCIDADE
     ; =========================
-    msg .= "⚙️ SPEED / SENSITIVITY`n"
-    msg .= "- CapsLock + WheelUp → Increase sensitivity`n"
-    msg .= "- CapsLock + WheelDown → Decrease sensitivity`n"
-    msg .= "- XButton1 + Wheel → Quick adjustment`n"
-    msg .= "- NumpadEnter + Numpad8 → Increase`n"
-    msg .= "- NumpadEnter + Numpad2 → Decrease`n`n"
+    msg .= "⚙️ VELOCIDADE / SENSIBILIDADE`n"
+    msg .= "- CapsLock + Scroll ↑ → Aumenta sensibilidade`n"
+    msg .= "- CapsLock + Scroll ↓ → Diminui sensibilidade`n"
+    msg .= "- XButton1 + Scroll → Ajuste rápido`n"
+    msg .= "- NumpadEnter + Numpad8 → Aumentar`n"
+    msg .= "- NumpadEnter + Numpad2 → Diminuir`n`n"
 
-    msg .= "📊 ADJUSTMENT LEVELS`n"
-    msg .= "  • 1 = fine (precision)`n"
-    msg .= "  • 2 = medium`n"
-    msg .= "  • 3 = fast (high gain)`n`n"
-	msg .= "  • F7 = diminui burst aceleração`n`n"
-	msg .= "  • F8 = aumenta burst aceleração`n`n"
-	msg .= "  • Aceleração serve para ajuste fino da mira`n`n"
-	msg .= "  • nos primeiros momentos da tecla pressionada`n`n"
+    msg .= "📊 NÍVEIS DE AJUSTE`n"
+    msg .= "  • 1 = fino (precisão)`n"
+    msg .= "  • 2 = médio`n"
+    msg .= "  • 3 = rápido (alta velocidade)`n`n"
+    msg .= "  • F7 = diminui aceleração burst`n"
+    msg .= "  • F8 = aumenta aceleração burst`n"
+    msg .= "  • A aceleração serve para ajuste fino da mira`n"
+    msg .= "  • nos primeiros momentos ao pressionar a tecla`n`n"
 
     ; =========================
-    ; SPECIAL CONTROLS
+    ; CONTROLES ESPECIAIS
     ; =========================
-    msg .= "🧩 SPECIAL CONTROLS`n"
-    msg .= "- Ctrl → left click`n"
-    msg .= "- Alt → right click`n"
-    msg .= "- Ctrl/Alt return to normal when EnterClick is ON`n`n"
+    msg .= "🧩 CONTROLES ESPECIAIS`n"
+    msg .= "- Ctrl → clique esquerdo`n"
+    msg .= "- Alt → clique direito`n"
+    msg .= "- Ctrl/Alt voltam ao normal quando EnterClick está ativado`n`n"
 
     ; =========================
     ; STATUS
     ; =========================
-    msg .= "📌 CURRENT STATUS`n"
-    msg .= "- GameMode: " (IsGameMode ? "ON" : "OFF") "`n"
+    msg .= "📌 STATUS ATUAL`n"
+    msg .= "- Modo Jogo: " (IsGameMode ? "ON" : "OFF") "`n"
     msg .= "- EnterClick: " (EnterClickEnabled ? "ON" : "OFF") "`n"
-    msg .= "- Sensitivity: " PassoVelocidade "`n`n"
+    msg .= "- Sensibilidade: " PassoVelocidade "`n`n"
 
     msg .= "═══════════════════════════════"
 
