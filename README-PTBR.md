@@ -70,6 +70,10 @@ msg .= "  • Ajusta sensibilidade (necessário em alguns jogos)`n"
 msg .= "  • Usa API direta do mouse (mouse_event)`n"
 msg .= "  • Cursor reseta para o centro da tela`n`n"
 
+msg .= "🗽 TRUE CRIME NY MODE (F6)`n"
+msg .= "  • Libera diagonais 7/9/1/3 para jogos como TRUE CRIME NY`n`n"
+msg .= "  • Que já usa estas teclas por padrão`n`n"
+
 ; =========================
 ; ENTER CLICK
 ; =========================
