@@ -1,4 +1,4 @@
-Transform your keyboard into a high level joykey controller.
+Pilot your mouse with your keyboard using custom gears, play it differently, way funnier. <be careful online. TESTED in SAMP, Roblox, some browsers shooters < fine
 
 Watch happening https://www.youtube.com/watch?v=OwW92DXjxac
 
@@ -24,7 +24,7 @@ num5, and Lctrl and num0 are left clicks
 
 * is mouse 3
 
-- toggle script on or off
+- or CAPSLOCK + HOME toggle script on or off
 
 Insert makes WASD as mouse too
 
