@@ -1,3 +1,5 @@
+v4 released https://github.com/Adaill/Gear/releases/tag/official
+
 Pilot your mouse with your keyboard using custom gears, play it differently, way funnier. <be careful online. TESTED in SAMP, Roblox, some browsers shooters < fine
 
 Watch happening https://www.youtube.com/watch?v=OwW92DXjxac
