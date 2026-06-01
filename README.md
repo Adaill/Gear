@@ -1,34 +1,4 @@
-v4 released https://github.com/Adaill/Gear/releases/tag/official
-
-Pilot your mouse with your keyboard using custom gears, play it differently, way funnier. <be careful online. TESTED in SAMP, Roblox, some browsers shooters < fine
-
-Watch happening https://www.youtube.com/watch?v=OwW92DXjxac
-
-https://www.youtube.com/live/_Ueuq8wz6Xc
-
-Be careful with ANTI CHEATS, spread the world so it becomes normal and developed (I tested in some SAMP servers and wasnt banned).
-
-Needs to be tested in online games with anticheats
-
-just download any of the .exe according to your language open it then CAPSLOCK + Home or Num- (Minus) F1 for help with cursor on DESKTOP
-
-SHIFT J inside a game to lock cursor on center so it becomes live IN Game (also sense stock adjust) F7 and F8 to adjust mouse accel burst (if u hold it for 1sec the sense is totalmente adjustable to aim.
-
-numEnter + num 8 / num 2 - operá-la sense gear adjustmente 
-
-same to capslock + scrollwheel up/down
-
-" ' " makes numEnter a left click disables LCtrl and LAlt from being left and right cliks and they assume normal letra and lalt funciona (also toggle arrowkeys as mouse or normal arrows)
- 
-LAlt and Num+ are right clicks
-
-num5, and Lctrl and num0 are left clicks
-
-* is mouse 3
-
-- or CAPSLOCK + HOME toggle script on or off
-
-Insert makes WASD as mouse too
+teclamouse.exe https://github.com/Adaill/Gear/releases/tag/access
 
     msg .= "═══════════════════════════════`n"
     msg .= "🧭 KEYJOY GEAR - FULL GUIDE`n"
